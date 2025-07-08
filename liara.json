@@ -1,0 +1,15 @@
+{
+  "platform": "docker",
+  "app": "unirate",
+  "port": 5000,
+  "build": {
+    "location": "iran"
+  },
+  "disks": [
+    {
+      "name": "data",
+      "mountTo": "/data",
+      "size": 200
+    }
+  ]
+}
