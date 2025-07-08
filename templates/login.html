@@ -1,0 +1,426 @@
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>سامانه نظرسنجی اساتید</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+      body {
+  font-family: 'Vazirmatn', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 96vh;
+  flex-direction: column;
+  color: #2c2c2c;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 10px 20px;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 0;
+  transition: box-shadow 0.3s ease;
+}
+
+.container:hover {
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.18);
+}
+
+.support-icon {
+    position: fixed !important;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    font-size: 24px;
+    color: #555;
+    z-index: 9999;
+    text-align: left;
+}
+.support-icon a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.support-icon a:hover {
+    color: #008CBA;
+}
+
+h1 {
+  color: #3c3c3c;
+  margin-bottom: 22px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+p {
+  color: #555555cc;
+  font-size: 14px;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+form {
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+}
+
+label {
+  display: block;
+  text-align: right;
+  margin-bottom: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #4a4a4a;
+  user-select: none;
+  letter-spacing: 0.01em;
+}
+
+input, select {
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 2px solid #d1d1d1;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  font-size: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  color: #333;
+  background-color: #fff;
+  font-weight: 500;
+  outline-offset: 2px;
+  outline-color: transparent;
+  box-shadow: none;
+  cursor: text;
+}
+
+input::placeholder {
+  color: #aaa;
+  font-weight: 400;
+}
+
+input:focus, select:focus {
+  border-color: #764ba2;
+  outline-color: #764ba2;
+  box-shadow: 0 0 12px rgba(118, 75, 162, 0.35);
+  background-color: #faf9ff;
+}
+
+.field-row {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  width: 100%;
+  padding: 14px 0;
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(118, 75, 162, 0.5);
+  transition: background 0.4s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #5a3c91 0%, #5364d9 100%);
+  box-shadow: 0 12px 25px rgba(83, 100, 217, 0.7);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 10px rgba(118, 75, 162, 0.4);
+}
+
+.stats-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 1200px;
+  margin-bottom: 0px;
+}
+
+.stat-card {
+  background-color: #fff;
+  border-radius: 14px;
+  padding: 5px 0px;
+  width: 210px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  cursor: default;
+  user-select: none;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.12s; }
+.stat-card:nth-child(2) { animation-delay: 0.22s; }
+.stat-card:nth-child(3) { animation-delay: 0.32s; }
+.stat-card:nth-child(4) { animation-delay: 0.42s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(118, 75, 162, 0.18);
+}
+
+.stat-card h3 {
+  color: #3b3b3b;
+  font-size: 17px;
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.stat-card p {
+  color: #764ba2;
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: 0.03em;
+}
+
+.footer {
+  font-family: 'Vazirmatn', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #ffffffdd;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+  letter-spacing: 1.2px;
+  user-select: none;
+}
+
+/* بخش جدید برای چینش فرم و استاد محبوب کنار هم */
+.main-flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 50px;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.popular-professor-box {
+  flex: 1;
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 350px;
+  text-align: center;
+}
+
+.popular-professor-box img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #764ba2;
+  margin-bottom: 12px;
+}
+
+.popular-professor-box h2 {
+  margin-bottom: 18px;
+  color: #4a4a4a;
+}
+
+.popular-professor-box h3 {
+  color:#764ba2;
+  margin: 0 0 8px;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+}
+
+.popular-professor-box p {
+  font-weight: 700;
+  font-size: 18px;
+  color: #5a3c91;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+
+  .main-flex-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .popular-professor-box,
+  .container {
+    max-width: 95%;
+    width: 100%;
+  }
+
+  .star-rating {
+  font-size: 22px;
+  color: gold;
+  margin-top: 6px;
+  direction: ltr;
+}
+}
+  </style>
+</head>
+<body>
+  <div class="support-icon">
+    <a href="/support" title="پشتیبانی">
+      <i class="fas fa-headset"></i>
+    </a>
+  </div>
+  <div class="stats-container">
+    <div class="stat-card">
+      <h3>دانشجویان لاگین‌شده</h3>
+      <p>{{ student_count }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>نظرات ثبت‌شده</h3>
+      <p>{{ comment_count }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>تعداد اساتید</h3>
+      <p>{{ professor_count }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>تعداد دروس</h3>
+      <p>{{ course_count }}</p>
+    </div>
+  </div>
+
+  <div class="main-flex-container">
+    {% if popular_professor %}
+    <div class="popular-professor-box">
+      <h2>استاد محبوب این دوره</h2>
+      <img 
+        src="{{ popular_professor.photo_url if popular_professor.photo_url else url_for('static', filename='avatar.png') }}" 
+        alt="عکس استاد محبوب" 
+        onerror="this.onerror=null;this.src='{static/avatar.png}';"
+      />
+      <h3>{{ popular_professor.name }}</h3>
+      <p>امتیاز: {{ '%.2f'|format(popular_score) }}</p>
+      <div class="star-rating">
+        {% for i in range(1, 6) %}
+        {% if popular_score >= i %}
+          ★
+        {% elif popular_score >= i - 0.5 %}
+          <span style="color:#ccc">★</span>
+        {% else %}
+          <span style="color:#ddd">★</span>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% if popular_professor %}
+  <div class="popular-professor">
+    <p>رشته مربوطه: {{ popular_professor.top_major_name }}</p>
+  </div>
+{% endif %}
+
+    </div>
+    {% else %}
+    <div class="popular-professor-box" style="visibility: hidden;"> <!-- جای خالی برای حفظ فاصله -->
+      &nbsp;
+    </div>
+    {% endif %}
+
+    <div class="container">
+      <h1>به سامانه نظرسنجی اساتید خوش آمدید!</h1>
+      <p>با این سامانه، به‌راحتی نظرات خود را درباره درس‌ها و اساتید ثبت کنید.</p>
+      <form method="post">
+        <label>شماره دانشجویی:</label>
+        <input name="student_id" required />
+
+        <div class="field-row">
+          <label>رشته تحصیلی:</label>
+          <select name="major_id" required>
+            <option value="" disabled selected>انتخاب کنید</option>
+            {% for major in majors %}
+              <option value="{{ major.id }}">{{ major.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit">ورود</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer">
+    Designed by Mohammad Mahdi Rasool Amini
+  </div>
+
+  {% if error_message %}
+    <script>
+      alert("{{ error_message }}");
+    </script>
+  {% endif %}
+
+  <script>
+    const majorSelect = document.querySelector('select[name="major_id"]');
+    const profContainer = document.querySelector(".popular-professor-box");
+    const profPhoto = profContainer.querySelector("img");
+    const profName = profContainer.querySelector("h3");
+    const profScore = profContainer.querySelector("p");
+
+    majorSelect.addEventListener("change", () => {
+      const majorId = majorSelect.value;
+      if (!majorId) {
+        profContainer.style.visibility = "hidden";
+        return;
+      }
+
+      fetch(`/popular_professor/${majorId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.name) {
+            profPhoto.src = data.photo_url || "/static/avatar.png";
+            profName.textContent = data.name;
+            profScore.textContent = `امتیاز محبوبیت: ${data.score}`;
+            profContainer.style.visibility = "visible";
+          } else {
+            profContainer.style.visibility = "hidden";
+          }
+        })
+        .catch(() => {
+          profContainer.style.visibility = "hidden";
+        });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <title>تماس با ما / پشتیبانی</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            direction: rtl;
+            position: relative;
+            color: #333;
+        }
+
+        .form-container {
+            background-color: #ffffffcc;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            width: 60%;
+            max-width: 700px;
+            box-sizing: border-box;
+            text-align: right;
+            margin-top: 40px;
+            flex-shrink: 0;
+        }
+
+        h2 {
+            font-weight: 700;
+            font-size: 22px;
+            margin-bottom: 25px;
+            user-select: none;
+            color: #333;
+        }
+
+        .notice {
+            background: #f0f4ff;
+            border: 1.5px solid #667eea;
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            font-size: 16px;
+            color: #334;
+            user-select: text;
+            line-height: 1.4;
+        }
+
+        .notice a {
+            color: #764ba2;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .notice a:hover {
+            text-decoration: underline;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #444;
+            user-select: none;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            margin-top: 6px;
+            padding: 10px 12px;
+            font-size: 15px;
+            border: 1.8px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+            resize: vertical;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 8px #667eea66;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 12px 0;
+            background-color: #764ba2;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            user-select: none;
+        }
+        button:hover {
+            background-color: #5a3c91;
+        }
+
+        .message {
+            margin-top: 15px;
+            color: green;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .error {
+            color: red;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* لینک بازگشت پایین سمت راست */
+        .back-link {
+            position: fixed;
+            bottom: 50px;
+            right: 30px;
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #6975DD;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.3s ease;
+            user-select: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+        .back-link:hover {
+            background-color: #5a3c91;
+        }
+
+        /* فوتر */
+        .footer {
+            margin-top: auto;
+            padding: 15px 10px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            color: #ffffffcc;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+            user-select: none;
+            text-align: center;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>تماس با ما / پشتیبانی</h2>
+
+        <div class="notice">
+            <strong>توجه:</strong> در صورت نیاز به ارتباط مستقیم با پشتیبان، لطفاً از طریق ایمیل زیر اقدام کنید: 
+            <a href="mailto:mohamadmahdiamini122@gmail.com">mohamadmahdiamini122@gmail.com</a>
+        </div>
+
+        {% if success %}
+            <p class="message">{{ success }}</p>
+        {% elif error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="post">
+            <label for="student_id">شماره دانشجویی:</label>
+            <input type="text" id="student_id" name="student_id" required />
+
+            <label for="major_text">رشته تحصیلی:</label>
+            <input type="text" id="major_text" name="major_text" required />
+
+            <label for="message">پیام شما:</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <button type="submit">ارسال پیام</button>
+        </form>
+    </div>
+
+    <a href="/" class="back-link">بازگشت به صفحه اصلی</a>
+
+    <div class="footer">
+        Designed by Mohammad Mahdi Rasool Amini
+    </div>
+</body>
+</html>

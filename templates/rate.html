@@ -1,0 +1,165 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>ثبت نظر برای درس {{ course.name }}</title>
+  <style>
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .card {
+      background-color: #ffffffcc;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 600px;
+      text-align: right;
+    }
+
+    h2, h3 {
+      text-align: center;
+      color: #333;
+    }
+
+    label, input, select, textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    input, select, textarea {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #764ba2;
+      outline: none;
+      box-shadow: 0 0 5px #764ba280;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #764ba2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5a3c91;
+    }
+
+    a {
+      color: #764ba2;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .footer {
+      font-family: 'Vazirmatn', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>ثبت نظر برای درس: {{ course.name }}</h2>
+
+    <form method="POST">
+      <label>انتخاب استاد:</label>
+      <select name="professor" required>
+        {% for prof in professors %}
+          <option value="{{ prof.id }}">{{ prof.name }}</option>
+        {% endfor %}
+      </select>
+
+      <h3>سوالات نظر سنجی:</h3>
+      <br>
+      <h4>امتیاز دهی از 1 تا 10</h4>
+      1. نحوه نمره دهی: <input name="q1" type="number" min="1" max="10" required>
+      2. میزان سختگیری: <input name="q2" type="number" min="1" max="10" required>
+      3. نحوه تدریس: <input name="q3" type="number" min="1" max="10" required>
+      4. برخورد با دانشجو: <input name="q4" type="number" min="1" max="10" required>
+
+      نظر اضافی:
+      <textarea name="comment" rows="4"></textarea>
+
+      <button type="submit">ثبت نظر</button>
+    </form>
+
+    <a href="/courses">بازگشت به لیست دروس</a>
+    <br>
+    <a href="/">بازگشت به صفحه اصلی</a>
+  </div>
+  <div class="footer">
+    Designed by Mohammad Mahdi Rasool Amini
+  </div>
+</body>
+</html>

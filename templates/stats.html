@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>آمار درس {{ course.name }}</title>
+  <style>
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .card {
+      background-color: #ffffffcc;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 600px;
+      text-align: right;
+    }
+
+    h2, h3, h4 {
+      text-align: center;
+      color: #333;
+    }
+
+    label, select {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    select {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      transition: all 0.3s ease;
+    }
+
+    select:focus {
+      border-color: #764ba2;
+      outline: none;
+      box-shadow: 0 0 5px #764ba280;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #764ba2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #5a3c91;
+    }
+
+    ul {
+      padding-right: 20px;
+      list-style: disc;
+      color: #222;
+    }
+
+    a {
+      color: #764ba2;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .professor-checkboxes {
+      margin: 20px 0;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f9f9f9;
+    }
+
+    .professor-checkboxes label {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    .footer {
+      font-family: 'Vazirmatn', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>مشاهده آمار درس: {{ course.name }}</h2>
+
+    <form method="POST">
+      <div class="professor-checkboxes">
+        <label><strong>استادها:</strong></label>
+        {% for prof in professors %}
+          <label>
+            <input type="checkbox" name="professors" value="{{ prof.id }}"
+              {% if selected_professors and prof.id in selected_professors %}checked{% endif %}>
+            {{ prof.name }}
+          </label>
+        {% endfor %}
+      </div>
+
+      <button type="submit" name="action" value="compare">مشاهده آمار / مقایسه</button>
+    </form>
+
+    {% if compare_results %}
+      <h3>مقایسه آمار استادها:</h3>
+      <table border="1" width="100%" style="border-collapse: collapse; text-align: center;">
+        <thead>
+          <tr style="background-color: #764ba2; color: white;">
+            <th>نام استاد</th>
+            <th>نحوه نمره دهی</th>
+            <th>میزان سختگیری</th>
+            <th>نحوه تدریس</th>
+            <th>برخورد با دانشجو</th>
+            <th>امتیاز کل</th> <!-- ستون جدید امتیاز کل -->
+          </tr>
+        </thead>
+        <tbody>
+          {% for prof_stat in compare_results %}
+            <tr>
+              <td>{{ prof_stat.name }}</td>
+              <td>{{ prof_stat.avg_q1|round(2) if prof_stat.avg_q1 else 'بدون داده' }}</td>
+              <td>{{ prof_stat.avg_q2|round(2) if prof_stat.avg_q2 else 'بدون داده' }}</td>
+              <td>{{ prof_stat.avg_q3|round(2) if prof_stat.avg_q3 else 'بدون داده' }}</td>
+              <td>{{ prof_stat.avg_q4|round(2) if prof_stat.avg_q4 else 'بدون داده' }}</td>
+              <td>{{ prof_stat.total_score|round(2) if prof_stat.total_score else 'بدون داده' }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% elif stats %}
+      <h3>آمار برای {{ selected_professor_name }}:</h3>
+      <ul>
+        <li>نحوه نمره دهی: {{ stats.avg_q1 | round(2) if stats.avg_q1 else 'بدون داده' }}</li>
+        <li>میزان سختگیری: {{ stats.avg_q2 | round(2) if stats.avg_q2 else 'بدون داده' }}</li>
+        <li>نحوه تدریس: {{ stats.avg_q3 | round(2) if stats.avg_q3 else 'بدون داده' }}</li>
+        <li>برخورد با دانشجو: {{ stats.avg_q4 | round(2) if stats.avg_q4 else 'بدون داده' }}</li>
+        <li><strong>امتیاز کل:</strong> {{ stats.total_score|round(2) if stats.total_score else 'بدون داده' }}</li>
+      </ul>
+
+      <h4>نظرات:</h4>
+      <ul>
+        {% for comment in comments %}
+          <li>{{ comment.comment }}</li>
+        {% else %}
+          <li>نظری ثبت نشده.</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <a href="/courses">بازگشت به لیست دروس</a><br>
+    <a href="/">بازگشت به صفحه اصلی</a>
+  </div>
+  <div class="footer">
+    Designed by Mohammad Mahdi Rasool Amini
+  </div>
+</body>
+</html>
